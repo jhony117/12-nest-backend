@@ -4,6 +4,8 @@ import { AuthController } from './auth.controller';
 import { Mongoose } from 'mongoose';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   controllers: [
@@ -12,13 +14,21 @@ import { User, UserSchema } from './entities/user.entity';
   
   ],
   providers: [AuthService],
-  imports : [
+  imports : [    //? para que las variables de entorno este listas
+    ConfigModule.forRoot(),
     MongooseModule.forFeature([
       {
         name: User.name,
         schema: UserSchema
       }
-    ])
+    ]),
+
+    JwtModule.register({
+      global: true,
+      secret : process.env.JWT_SEED,
+      signOptions : {expiresIn : '6h'}
+    })
+
   ]
 })
 export class AuthModule {}

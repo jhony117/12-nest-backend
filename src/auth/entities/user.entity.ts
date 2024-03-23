@@ -3,7 +3,9 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema()
 export class User {
-    // _id :string;
+    
+     _id?:string;
+
     @Prop({unique : true, required: true})
     email :string;
 
@@ -11,7 +13,7 @@ export class User {
     name :string;
 
     @Prop({ minlength: 6 , required: true })
-    password: string;
+    password?: string;
 
     @Prop({ default : true})
     isActive: boolean;
